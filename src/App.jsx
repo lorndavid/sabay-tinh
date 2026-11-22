@@ -2,7 +2,6 @@ import React from "react";
 import { CartProvider, useCart } from "./context/CartContext";
 import Navbar from "./components/Navbar";
 import { Hero } from "@/components/ui/animated-hero";
-import ThreeDeskScene from "./components/ThreeDeskScene";
 import ProductCatalog from "./components/ProductCatalog";
 import CartView from "./components/CartView";
 import CheckoutView from "./components/CheckoutView";
@@ -24,7 +23,6 @@ function MainContent() {
         {activeView === "landing" && (
           <>
             <Hero />
-            <ThreeDeskScene />
             <ProductCatalog />
           </>
         )}
