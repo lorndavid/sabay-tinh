@@ -8,10 +8,7 @@ import {
   ArrowRight, 
   ArrowLeft, 
   Tag, 
-  Check, 
-  ShieldCheck, 
-  Truck,
-  Heart
+  Check 
 } from "lucide-react";
 
 export default function CartView() {
@@ -27,7 +24,6 @@ export default function CartView() {
     formatPrice, 
     setActiveView,
     promoCode,
-    setPromoCode,
     appliedPromo,
     promoError,
     applyPromo,
@@ -45,62 +41,54 @@ export default function CartView() {
 
   return (
     <div className="min-h-screen bg-white py-12">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Breadcrumb / Back button */}
-        <div className="flex items-center justify-between mb-8">
+        {/* Navigation */}
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-neutral-200">
           <button
             onClick={() => setActiveView("landing")}
-            className="inline-flex items-center gap-2 text-xs font-bold text-neutral-600 hover:text-neutral-950 transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-bold text-neutral-600 hover:text-black transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Continue Shopping</span>
           </button>
-
-          <div className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
-            Practical Exercise 1 • Shopping Cart
-          </div>
-        </div>
-
-        <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-neutral-950">
+          <span className="text-xs font-mono text-neutral-400">
             Shopping Cart
-          </h1>
-          <p className="mt-1 text-sm text-neutral-500">
-            គ្រប់គ្រងបរិមាណទំនិញ បន្ថយ ឬបង្កើនចំនួន និងពិនិត្យការគណនាតម្លៃសរុប
-          </p>
+          </span>
         </div>
+
+        <h1 className="text-3xl font-black tracking-tight text-black mb-8">
+          Your Cart
+        </h1>
 
         {cart.length === 0 ? (
-          <div className="p-12 text-center rounded-3xl border border-neutral-200 bg-neutral-50/50">
-            <div className="w-16 h-16 rounded-2xl bg-white border border-neutral-200 flex items-center justify-center text-neutral-400 mx-auto mb-4">
-              <ShoppingBag className="w-8 h-8" />
-            </div>
-            <h3 className="text-lg font-bold text-neutral-900">Your cart is empty</h3>
-            <p className="mt-1 text-sm text-neutral-500 max-w-sm mx-auto">
-              Add any of the 4 hardware essentials (Laptop $650, Monitor $120, Keyboard $25, Mouse $15) to continue.
+          <div className="p-12 text-center rounded-2xl border border-neutral-200 bg-neutral-50">
+            <ShoppingBag className="w-10 h-10 text-neutral-400 mx-auto mb-3" />
+            <h3 className="text-base font-bold text-black">Your cart is currently empty</h3>
+            <p className="mt-1 text-xs text-neutral-500">
+              Select any of the 4 hardware products to get started.
             </p>
             <button
               onClick={() => setActiveView("landing")}
-              className="mt-6 px-6 py-3 rounded-2xl bg-neutral-950 text-white font-bold text-xs hover:bg-neutral-800 transition-colors"
+              className="mt-5 px-5 py-2.5 rounded-xl bg-black text-white font-bold text-xs hover:bg-neutral-800 transition-colors"
             >
-              Back to Catalog
+              Back to Products
             </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* Left Column: Cart Items Table/List (Page 2 screenshot style) */}
+            {/* Products List */}
             <div className="lg:col-span-8 space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
+              <div className="flex items-center justify-between pb-2 border-b border-neutral-200">
                 <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">
-                  Cart Items ({cart.length})
+                  Items ({cart.length})
                 </span>
                 <button
                   onClick={clearCart}
-                  className="text-xs text-neutral-400 hover:text-rose-600 font-medium transition-colors"
+                  className="text-xs text-neutral-400 hover:text-black transition-colors"
                 >
-                  Clear all items
+                  Clear all
                 </button>
               </div>
 
@@ -108,115 +96,79 @@ export default function CartView() {
                 {cart.map(({ product, quantity }) => (
                   <div 
                     key={product.id} 
-                    className="py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                    className="py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                   >
-                    {/* Thumbnail & Title */}
-                    <div className="flex items-center gap-4">
-                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-neutral-50 border border-neutral-200 p-2 flex-shrink-0 flex items-center justify-center">
+                    <div className="flex items-center gap-3">
+                      <div className="w-20 h-20 rounded-xl bg-neutral-50 border border-neutral-200 p-2 flex-shrink-0 flex items-center justify-center">
                         <img
                           src={product.image}
                           alt={product.name}
-                          className="w-full h-full object-cover rounded-xl"
+                          className="w-full h-full object-cover rounded-lg"
                         />
                       </div>
                       <div>
                         <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
                           {product.category}
                         </span>
-                        <h3 className="text-base font-bold text-neutral-950">
+                        <h3 className="text-sm font-bold text-black">
                           {product.name}
                         </h3>
-                        <p className="text-xs text-neutral-500 font-medium">
-                          {product.khmerName}
-                        </p>
-                        <div className="mt-1 flex items-center gap-3 text-xs text-neutral-400">
-                          <span>Unit Price: <strong className="text-neutral-900 font-mono">{formatPrice(product.price)}</strong></span>
-                          <span>•</span>
-                          <span className="text-emerald-600 font-medium">In Stock</span>
+                        <div className="text-xs text-neutral-500 font-mono mt-0.5">
+                          {formatPrice(product.price)} each
                         </div>
                       </div>
                     </div>
 
-                    {/* Quantity Controls & Line Total */}
-                    <div className="flex items-center justify-between w-full sm:w-auto sm:justify-end gap-6 pt-2 sm:pt-0">
-                      
-                      {/* Stepper (Update QTY / Remove QTY) */}
-                      <div className="flex items-center rounded-xl border border-neutral-300 bg-neutral-50 p-1">
+                    <div className="flex items-center justify-between w-full sm:w-auto sm:justify-end gap-6">
+                      {/* Stepper */}
+                      <div className="flex items-center rounded-lg border border-neutral-300 bg-neutral-50 p-0.5">
                         <button
                           onClick={() => updateQuantity(product.id, quantity - 1)}
-                          className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-white text-neutral-700 transition-colors"
-                          title="Decrease quantity"
+                          className="w-6 h-6 flex items-center justify-center rounded hover:bg-white text-neutral-700"
                         >
-                          <Minus className="w-3.5 h-3.5" />
+                          <Minus className="w-3 h-3" />
                         </button>
-                        <input
-                          type="number"
-                          min="1"
-                          max="99"
-                          value={quantity}
-                          onChange={(e) => {
-                            const val = parseInt(e.target.value, 10);
-                            if (!isNaN(val)) updateQuantity(product.id, val);
-                          }}
-                          className="w-10 text-center text-xs font-mono font-bold text-neutral-900 bg-transparent focus:outline-none"
-                        />
+                        <span className="w-8 text-center text-xs font-mono font-bold text-black">
+                          {quantity}
+                        </span>
                         <button
                           onClick={() => updateQuantity(product.id, quantity + 1)}
-                          className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-white text-neutral-700 transition-colors"
-                          title="Increase quantity"
+                          className="w-6 h-6 flex items-center justify-center rounded hover:bg-white text-neutral-700"
                         >
-                          <Plus className="w-3.5 h-3.5" />
+                          <Plus className="w-3 h-3" />
                         </button>
                       </div>
 
-                      {/* Line total */}
-                      <div className="text-right min-w-[90px]">
-                        <span className="text-sm font-black font-mono text-neutral-950 block">
+                      <div className="text-right min-w-[80px]">
+                        <span className="text-sm font-black font-mono text-black">
                           {formatPrice(product.price * quantity)}
                         </span>
                       </div>
 
-                      {/* Action icons (Heart / Delete) */}
-                      <div className="flex items-center gap-1">
-                        <button
-                          onClick={() => removeFromCart(product.id)}
-                          className="p-2 rounded-lg text-neutral-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
-                          title="Remove item"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-
+                      <button
+                        onClick={() => removeFromCart(product.id)}
+                        className="p-1.5 text-neutral-400 hover:text-black transition-colors"
+                        title="Remove"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
                 ))}
               </div>
-
-              {/* Guarantees */}
-              <div className="pt-6 border-t border-neutral-200 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-neutral-600">
-                <div className="flex items-center gap-2 p-3 rounded-xl bg-neutral-50 border border-neutral-100">
-                  <Truck className="w-4 h-4 text-neutral-800" />
-                  <span>Free Ground Delivery on all qualifying orders</span>
-                </div>
-                <div className="flex items-center gap-2 p-3 rounded-xl bg-neutral-50 border border-neutral-100">
-                  <ShieldCheck className="w-4 h-4 text-neutral-800" />
-                  <span>Official Manufacturer Warranty Included</span>
-                </div>
-              </div>
             </div>
 
-            {/* Right Column: Order Summary (Page 2 & 3 style) */}
+            {/* Order Summary */}
             <div className="lg:col-span-4">
-              <div className="p-6 rounded-3xl bg-neutral-50 border border-neutral-200 shadow-sm space-y-6">
-                
-                <h2 className="text-lg font-black text-neutral-950 pb-3 border-b border-neutral-200">
+              <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-5">
+                <h2 className="text-base font-black text-black pb-3 border-b border-neutral-200">
                   Order Summary
                 </h2>
 
-                <div className="space-y-3 text-sm">
+                <div className="space-y-2.5 text-xs">
                   <div className="flex justify-between text-neutral-600">
                     <span>Subtotal</span>
-                    <span className="font-mono font-bold text-neutral-950">
+                    <span className="font-mono font-bold text-black">
                       {formatPrice(subtotal)}
                     </span>
                   </div>
@@ -224,50 +176,50 @@ export default function CartView() {
                   <div className="flex justify-between text-neutral-600">
                     <span>Delivery</span>
                     <span className="font-mono font-semibold">
-                      {effectiveShippingCost === 0 ? "FREE" : formatPrice(effectiveShippingCost)}
+                      {effectiveShippingCost === 0 ? "Free" : formatPrice(effectiveShippingCost)}
                     </span>
                   </div>
 
                   {discountAmount > 0 && (
                     <div className="flex justify-between text-emerald-600 font-semibold">
-                      <span>Discount ({appliedPromo?.label || "Promo"})</span>
+                      <span>Discount</span>
                       <span className="font-mono">-{formatPrice(discountAmount)}</span>
                     </div>
                   )}
 
-                  <div className="pt-4 border-t border-neutral-200 flex justify-between items-baseline">
-                    <span className="text-base font-black text-neutral-950">Total</span>
-                    <span className="text-2xl font-black font-mono text-neutral-950">
+                  <div className="pt-3 border-t border-neutral-200 flex justify-between items-baseline">
+                    <span className="text-sm font-black text-black">Total</span>
+                    <span className="text-xl font-black font-mono text-black">
                       {formatPrice(grandTotal)}
                     </span>
                   </div>
                 </div>
 
-                {/* Promo Code Toggle & Form */}
-                <div className="pt-2">
+                {/* Promo Code */}
+                <div>
                   {!appliedPromo ? (
                     <div>
                       {!showPromoInput ? (
                         <button
                           onClick={() => setShowPromoInput(true)}
-                          className="text-xs font-semibold text-neutral-600 hover:text-neutral-950 flex items-center gap-1.5 transition-colors"
+                          className="text-xs font-semibold text-neutral-600 hover:text-black flex items-center gap-1.5"
                         >
-                          <Tag className="w-3.5 h-3.5" />
-                          <span>Use a promo code</span>
+                          <Tag className="w-3 h-3" />
+                          <span>Add promo code</span>
                         </button>
                       ) : (
-                        <form onSubmit={handleApplyPromo} className="space-y-2">
+                        <form onSubmit={handleApplyPromo} className="space-y-1.5">
                           <div className="flex gap-2">
                             <input
                               type="text"
                               value={inputCode}
                               onChange={(e) => setInputCode(e.target.value)}
-                              placeholder="e.g. SABAY10 or KHQR"
-                              className="flex-1 px-3 py-2 rounded-xl text-xs uppercase font-mono border border-neutral-300 focus:outline-none focus:ring-1 focus:ring-neutral-950"
+                              placeholder="SABAY10"
+                              className="flex-1 px-3 py-1.5 rounded-lg text-xs uppercase font-mono border border-neutral-300 focus:outline-none focus:ring-1 focus:ring-black"
                             />
                             <button
                               type="submit"
-                              className="px-3 py-2 rounded-xl text-xs font-bold bg-neutral-950 text-white hover:bg-neutral-800 transition-colors"
+                              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-black text-white hover:bg-neutral-800"
                             >
                               Apply
                             </button>
@@ -275,21 +227,15 @@ export default function CartView() {
                           {promoError && (
                             <p className="text-[11px] text-rose-600">{promoError}</p>
                           )}
-                          <p className="text-[10px] text-neutral-400">
-                            Available codes: <strong>SABAY10</strong> (10% off), <strong>KHQR</strong> ($5 off)
-                          </p>
                         </form>
                       )}
                     </div>
                   ) : (
-                    <div className="flex items-center justify-between p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs">
-                      <div className="flex items-center gap-1.5 text-emerald-800 font-semibold">
-                        <Check className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>{appliedPromo.code} Applied</span>
-                      </div>
+                    <div className="flex items-center justify-between p-2 rounded-lg bg-white border border-neutral-200 text-xs">
+                      <span className="font-semibold text-black">{appliedPromo.code} applied</span>
                       <button
                         onClick={removePromo}
-                        className="text-neutral-500 hover:text-rose-600 text-[11px] font-medium"
+                        className="text-neutral-500 hover:text-black text-[11px]"
                       >
                         Remove
                       </button>
@@ -297,21 +243,17 @@ export default function CartView() {
                   )}
                 </div>
 
-                {/* BTN Proceed to Checkout (PDF Page 1 Requirement #3) */}
+                {/* BTN Proceed to Checkout */}
                 <button
                   onClick={() => {
                     setActiveView("checkout");
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
-                  className="w-full py-4 px-6 rounded-2xl bg-neutral-950 text-white font-bold text-sm hover:bg-neutral-800 transition-all shadow-md flex items-center justify-center gap-2 group"
+                  className="w-full py-3.5 px-4 rounded-xl bg-black text-white font-bold text-xs hover:bg-neutral-800 transition-all flex items-center justify-center gap-2 group shadow-sm"
                 >
                   <span>Proceed to Checkout</span>
-                  <ArrowRight className="w-4 h-4 text-neutral-400 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                 </button>
-
-                <p className="text-center text-[11px] text-neutral-400">
-                  Taxes calculated during checkout • 100% Secure Checkout
-                </p>
 
               </div>
             </div>

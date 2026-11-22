@@ -4,11 +4,10 @@ import { PRODUCTS, SHIPPING_METHODS, PROMO_CODES } from "../data/products";
 
 const CartContext = createContext(null);
 
-const STORAGE_KEY_CART = "sabaytinh_cart_v1";
+const STORAGE_KEY_CART = "sabaytinh_cart_v2";
 const STORAGE_KEY_ORDER_COUNTER = "sabaytinh_order_counter";
 
 export function CartProvider({ children }) {
-  // Initial cart with sample product from the PDF (e.g. 1 Laptop) or saved in localStorage
   const [cart, setCart] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_CART);
@@ -16,9 +15,8 @@ export function CartProvider({ children }) {
     } catch {
       // fallback
     }
-    // Default starter cart matching PDF items: 1 Laptop
     return [
-      { product: PRODUCTS[0], quantity: 1 } // Laptop $650
+      { product: PRODUCTS[0], quantity: 1 } // Starter: 1 Laptop $650
     ];
   });
 
@@ -34,10 +32,6 @@ export function CartProvider({ children }) {
   const [activeOrder, setActiveOrder] = useState(null);
   const [isOrderConfirmedModalOpen, setIsOrderConfirmedModalOpen] = useState(false);
 
-  // Currency switch (USD $ or Cambodian Riel ៛)
-  const [currency, setCurrency] = useState("USD");
-  const KHR_RATE = 4000;
-
   // Notification toast
   const [toast, setToast] = useState(null);
 
@@ -45,7 +39,7 @@ export function CartProvider({ children }) {
     setToast({ message, type });
     setTimeout(() => {
       setToast(null);
-    }, 3200);
+    }, 2800);
   };
 
   useEffect(() => {
@@ -56,7 +50,7 @@ export function CartProvider({ children }) {
     }
   }, [cart]);
 
-  // Pricing calculations
+  // Pricing calculations in USD
   const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
   const discountAmount = appliedPromo
@@ -69,11 +63,8 @@ export function CartProvider({ children }) {
   const grandTotal = Math.max(0, subtotal + effectiveShippingCost - discountAmount);
   const totalItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+  // Strictly USD formatting
   const formatPrice = (amountUsd) => {
-    if (currency === "KHR") {
-      const khrVal = Math.round(amountUsd * KHR_RATE);
-      return `${khrVal.toLocaleString()} ៛`;
-    }
     return `$${Number(amountUsd).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
@@ -109,7 +100,7 @@ export function CartProvider({ children }) {
     const item = cart.find((i) => i.product.id === productId);
     setCart((prev) => prev.filter((i) => i.product.id !== productId));
     if (item) {
-      showToast(`Removed "${item.product.name}" from cart`, "info");
+      showToast(`Removed "${item.product.name}"`, "info");
     }
   };
 
@@ -122,10 +113,10 @@ export function CartProvider({ children }) {
     if (PROMO_CODES[trimmed]) {
       setAppliedPromo(PROMO_CODES[trimmed]);
       setPromoError("");
-      showToast(`Promo "${trimmed}" applied successfully!`);
+      showToast(`Code "${trimmed}" applied`);
       return true;
     } else {
-      setPromoError("Invalid discount code. Try 'SABAY10' or 'KHQR'");
+      setPromoError("Invalid code. Try SABAY10 or SAVE5");
       return false;
     }
   };
@@ -138,8 +129,7 @@ export function CartProvider({ children }) {
   };
 
   // Place order logic (Exercise 3: Order Confirmation)
-  const placeOrder = (customerData, selectedShipMethod, paymentMethod = "KHQR Bakong") => {
-    // Generate sequential order ID like ORD-0001
+  const placeOrder = (customerData, selectedShipMethod, paymentMethod = "Credit Card") => {
     let orderNum = 1;
     try {
       const stored = localStorage.getItem(STORAGE_KEY_ORDER_COUNTER);
@@ -160,7 +150,7 @@ export function CartProvider({ children }) {
       customerName: `${customerData.firstName} ${customerData.lastName}`,
       orderDate: new Date().toLocaleDateString("en-US", {
         year: "numeric",
-        month: "long",
+        month: "short",
         day: "numeric",
         hour: "2-digit",
         minute: "2-digit"
@@ -176,15 +166,14 @@ export function CartProvider({ children }) {
     };
 
     setActiveOrder(newOrder);
-    setCart([]); // Clear cart as order is placed
+    setCart([]);
     setIsOrderConfirmedModalOpen(true);
     setActiveView("landing");
 
-    // Launch celebratory confetti
     try {
       confetti({
-        particleCount: 120,
-        spread: 70,
+        particleCount: 100,
+        spread: 60,
         origin: { y: 0.6 }
       });
     } catch {
@@ -228,8 +217,6 @@ export function CartProvider({ children }) {
         isOrderConfirmedModalOpen,
         setIsOrderConfirmedModalOpen,
         placeOrder,
-        currency,
-        setCurrency,
         formatPrice,
         toast,
         showToast

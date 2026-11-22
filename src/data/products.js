@@ -8,111 +8,103 @@ export const PRODUCTS = [
   {
     id: "prod-laptop",
     name: "SabayBook Pro Laptop",
-    khmerName: "កុំព្យូទ័រយួរដៃ Laptop",
     category: "Computers",
     price: 650,
     rating: 4.9,
     reviewsCount: 142,
-    badge: "Best Seller",
-    tagline: "Ultra-slim aerospace aluminum with 14-inch 120Hz Liquid Retina display",
-    description: "The SabayBook Pro redefines productivity with a stunning unibody finish, 12-core silicon architecture, 16GB unified memory, and 512GB ultra-fast NVMe storage. Designed for creators, developers, and power users in Cambodia.",
+    badge: "Flagship",
+    tagline: '14" Liquid Retina Display • 120Hz ProMotion',
+    description: "Precision-milled aerospace aluminum unibody. 12-core architecture, 16GB unified memory, and 512GB NVMe SSD storage.",
     specs: {
-      Processor: "Octa-Core M-Silicon 3.2GHz",
-      Memory: "16GB LPDDR5X Dual Channel",
-      Storage: "512GB PCIe 4.0 NVMe SSD",
-      Display: '14.2" Liquid Retina (2560x1600), 120Hz ProMotion',
-      Battery: "70Wh (Up to 18 Hours battery life)",
+      Processor: "Octa-Core 3.2GHz",
+      Memory: "16GB LPDDR5X",
+      Storage: "512GB PCIe 4.0 SSD",
+      Display: '14.2" Liquid Retina 120Hz',
+      Battery: "Up to 18 Hours",
       Weight: "1.38 kg",
-      Ports: "2x Thunderbolt 4, 1x HDMI 2.1, 1x MagCharge, 3.5mm Audio",
-      Color: "Space Gray / Silver Anodized"
+      Ports: "Thunderbolt 4, HDMI 2.1, Audio",
+      Chassis: "Anodized Aluminum"
     },
     inStock: true,
     stockCount: 18,
     image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1000&q=80",
     color: "#27272a",
-    threeMeshName: "laptopMesh",
     dimensions: "31.2 x 22.1 x 1.5 cm"
   },
   {
     id: "prod-monitor",
     name: "SabayView 4K Ultra Monitor",
-    khmerName: "អេក្រង់កុំព្យូទ័រ Monitor",
     category: "Displays",
     price: 120,
     rating: 4.8,
     reviewsCount: 98,
-    badge: "Most Popular",
-    tagline: '27-inch 4K UHD IPS borderless studio monitor with 100Hz refresh rate',
-    description: "Crystal clear visual fidelity for multitasking and high-fidelity media production. Featuring 99% sRGB color gamut, HDR10 dynamic range, eye-care flicker-free technology, and integrated USB-C 65W power delivery.",
+    badge: "Studio",
+    tagline: '27" UHD 4K IPS • 100Hz Refresh Rate',
+    description: "Borderless studio display with 99% sRGB color accuracy, HDR10 dynamic range, and integrated 65W USB-C power delivery.",
     specs: {
-      ScreenSize: '27" Flat IPS Panel',
+      ScreenSize: '27" Flat IPS',
       Resolution: "3840 x 2160 UHD 4K",
-      RefreshRate: "100Hz with Adaptive-Sync",
-      ColorGamut: "99% sRGB / 95% DCI-P3",
-      Brightness: "400 nits (HDR10)",
-      Connectivity: "1x USB-C (65W PD), 2x HDMI 2.0, 1x DisplayPort 1.4",
-      Stand: "Height, Tilt, Swivel, and 90° Pivot Adjustable",
-      Bezel: "3-Side Borderless Micro-Edge"
+      RefreshRate: "100Hz Adaptive-Sync",
+      Color: "99% sRGB / HDR10",
+      Brightness: "400 nits",
+      Ports: "USB-C (65W PD), HDMI 2.0, DP 1.4",
+      Stand: "Height, Tilt & Swivel Adjustable",
+      Bezel: "Micro-Edge Borderless"
     },
     inStock: true,
     stockCount: 24,
     image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=1000&q=80",
     color: "#18181b",
-    threeMeshName: "monitorMesh",
     dimensions: "61.3 x 36.4 x 4.5 cm"
   },
   {
     id: "prod-keyboard",
-    name: "SabayKeys Tactile Mechanical Keyboard",
-    khmerName: "ក្ដារចុច Keyboard",
+    name: "SabayKeys Mechanical Keyboard",
     category: "Peripherals",
     price: 25,
     rating: 4.9,
     reviewsCount: 215,
-    badge: "Value Choice",
-    tagline: "75% compact hot-swappable mechanical switches with subtle white LED backlighting",
-    description: "Engineered for rapid typing precision with pre-lubed tactile mechanical switches, sound-dampening silicone foam, double-shot PBT keycaps, and dual-mode connectivity (Type-C wired & Bluetooth 5.2).",
+    badge: "Tactile",
+    tagline: "75% Compact Layout • Hot-Swappable Switches",
+    description: "Engineered for tactile typing precision with pre-lubed switches, sound-dampening silicone foam, and dual Bluetooth/USB-C modes.",
     specs: {
       Layout: "75% Compact (82 Keys)",
-      SwitchType: "Hot-Swappable Custom Tactile Brown Switches",
-      Keycaps: "Double-Shot PBT OEM Profile",
-      Connectivity: "Detachable USB-C / Bluetooth 5.2",
-      Backlight: "Clean Pure White LED with 14 Dynamic Effects",
-      Battery: "3000mAh Rechargeable (Up to 200h without light)",
-      Compatibility: "Windows, macOS, iOS, Android, Linux"
+      Switches: "Hot-Swappable Tactile Brown",
+      Keycaps: "Double-Shot PBT",
+      Connectivity: "USB-C / Bluetooth 5.2",
+      Backlight: "Subtle White LED",
+      Battery: "3000mAh Rechargeable",
+      OS: "macOS, Windows, Linux"
     },
     inStock: true,
     stockCount: 45,
     image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=1000&q=80",
     color: "#3f3f46",
-    threeMeshName: "keyboardMesh",
     dimensions: "32.0 x 13.5 x 3.8 cm"
   },
   {
     id: "prod-mouse",
     name: "SabayGrip Precision Wireless Mouse",
-    khmerName: "កណ្តុរកុំព្យូទ័រ Mouse",
     category: "Peripherals",
     price: 15,
     rating: 4.7,
     reviewsCount: 180,
-    badge: "Essential",
-    tagline: "Ultra-silent optical sensor with 4000 DPI and ergonomic palm curvature",
-    description: "Whisper-quiet clicks combined with a smooth-glide Teflon PTFE feet and an optical sensor that tracks flawlessly on any surface, even clear glass. Lightweight at only 68g for fatigue-free all-day comfort.",
+    badge: "Ergonomic",
+    tagline: "4000 DPI Silent Optical Sensor • 68g Ultra-Light",
+    description: "Silent micro-switches, PTFE glide feet, and dual 2.4GHz / Bluetooth connectivity. Designed for comfortable, fatigue-free control.",
     specs: {
-      Sensor: "Precision Optical Tracking Sensor (800 - 4000 DPI adjustable)",
-      Buttons: "6 Silent Micro-switch Buttons (Left, Right, Wheel, DPI, Forward, Back)",
-      Connectivity: "2.4GHz Nano USB Receiver + Bluetooth 5.0 Dual Mode",
-      Weight: "68 grams ultra-light",
-      Battery: "Type-C Fast Charge (3 months per charge)",
-      Range: "Up to 10 meters wireless freedom",
-      Ergonomics: "Right-Handed Sculpted Thumb Rest"
+      Sensor: "Optical (800 - 4000 DPI)",
+      Buttons: "6 Silent Micro-Switches",
+      Connectivity: "2.4GHz Wireless + Bluetooth",
+      Weight: "68 grams",
+      Battery: "Type-C Fast Charging",
+      Range: "Up to 10m",
+      Grip: "Ergonomic Right-Handed"
     },
     inStock: true,
     stockCount: 60,
     image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=1000&q=80",
     color: "#52525b",
-    threeMeshName: "mouseMesh",
     dimensions: "11.2 x 6.5 x 3.9 cm"
   }
 ];
@@ -120,32 +112,31 @@ export const PRODUCTS = [
 export const SHIPPING_METHODS = [
   {
     id: "ship-standard",
-    name: "Free Standard Shipping",
+    name: "Standard Ground Delivery",
     duration: "3 - 5 Business Days",
     cost: 0,
     badge: "Free",
-    description: "Reliable ground delivery nationwide across Cambodia (Phnom Penh & Provinces)"
+    description: "Carbon-neutral ground shipping"
   },
   {
     id: "ship-express",
-    name: "Express Shipping",
+    name: "Express Priority Shipping",
     duration: "1 - 2 Business Days",
     cost: 9,
     badge: "$9.00",
-    description: "Priority fast courier dispatch via J&T Express / Virak Buntham"
+    description: "Fast expedited air courier"
   },
   {
     id: "ship-sameday",
-    name: "Phnom Penh Same-Day Delivery",
+    name: "Same-Day Courier",
     duration: "Within 2 - 4 Hours",
     cost: 15,
     badge: "$15.00",
-    description: "Direct GrabExpress / Delivery motorbike dispatch directly to your door"
+    description: "Direct on-demand local delivery"
   }
 ];
 
 export const PROMO_CODES = {
-  SABAY10: { code: "SABAY10", discountPercent: 10, label: "10% Welcome Discount" },
-  KHQR: { code: "KHQR", discountFixed: 5, label: "$5 Bakong KHQR Special Discount" },
-  FREESHIP: { code: "FREESHIP", freeShipping: true, label: "100% Free Shipping Voucher" }
+  SABAY10: { code: "SABAY10", discountPercent: 10, label: "10% Off" },
+  SAVE5: { code: "SAVE5", discountFixed: 5, label: "$5 Off" }
 };
