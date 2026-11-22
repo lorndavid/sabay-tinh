@@ -9,7 +9,7 @@ import { useCart } from "@/context/CartContext";
 function Hero() {
   const { setSelectedProductForModal, addToCart, formatPrice } = useCart();
 
-  // Animated title state
+  // Animated rotating titles
   const [titleNumber, setTitleNumber] = useState(0);
   const titles = useMemo(
     () => ["minimalist", "powerful", "beautiful", "precision", "effortless"],
@@ -46,43 +46,59 @@ function Hero() {
     deskGroup: null
   });
 
-  // Three.js 3D Desk Setup
+  // Three.js 3D Desk Setup with Photorealistic Floor & Shadows
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xfcfcfd);
+    scene.background = null;
 
     const width = container.clientWidth || 600;
-    const height = container.clientHeight || 520;
+    const height = container.clientHeight || 540;
 
-    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
     camera.position.set(0, 2.0, 4.4);
     sceneState.current.camera = camera;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: true, 
+      alpha: true, 
+      powerPreference: "high-performance" 
+    });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.setClearColor(0x000000, 0);
 
     container.appendChild(renderer.domElement);
 
-    // Studio Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+    // Studio Lighting for High-End Tangible Realism
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.6);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 2.2);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2.4);
     dirLight.position.set(4, 7, 5);
     dirLight.castShadow = true;
     dirLight.shadow.mapSize.width = 2048;
     dirLight.shadow.mapSize.height = 2048;
+    dirLight.shadow.bias = -0.0003;
+    dirLight.shadow.camera.near = 0.5;
+    dirLight.shadow.camera.far = 25;
+    dirLight.shadow.camera.left = -4;
+    dirLight.shadow.camera.right = 4;
+    dirLight.shadow.camera.top = 4;
+    dirLight.shadow.camera.bottom = -4;
     scene.add(dirLight);
 
-    const softFillLight = new THREE.DirectionalLight(0xe0e7ff, 0.8);
+    const softFillLight = new THREE.DirectionalLight(0xf0f4ff, 0.9);
     softFillLight.position.set(-5, 4, -2);
     scene.add(softFillLight);
+
+    const groundBounceLight = new THREE.DirectionalLight(0xffffff, 0.4);
+    groundBounceLight.position.set(0, -3, 2);
+    scene.add(groundBounceLight);
 
     const deskGroup = new THREE.Group();
     scene.add(deskGroup);
@@ -90,8 +106,8 @@ function Hero() {
 
     // Materials
     const woodDeskMaterial = new THREE.MeshStandardMaterial({
-      color: 0xf5f5f7,
-      roughness: 0.25,
+      color: 0xfafafa,
+      roughness: 0.2,
       metalness: 0.05
     });
 
@@ -103,7 +119,7 @@ function Hero() {
 
     const aluminumMaterial = new THREE.MeshStandardMaterial({
       color: 0xd4d4d8,
-      metalness: 0.85,
+      metalness: 0.88,
       roughness: 0.2
     });
 
@@ -118,26 +134,35 @@ function Hero() {
       roughness: 0.4
     });
 
-    // Desk Top
+    // Desk Top (White Minimalist Studio Surface)
     const deskTopGeo = new THREE.BoxGeometry(4.8, 0.1, 2.6);
     const deskTopMesh = new THREE.Mesh(deskTopGeo, woodDeskMaterial);
     deskTopMesh.position.y = -0.05;
     deskTopMesh.receiveShadow = true;
     deskGroup.add(deskTopMesh);
 
-    // Slim black desk legs
+    // Slim matte black desk legs
     const legGeo = new THREE.CylinderGeometry(0.035, 0.035, 2.2, 16);
     const legMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.5, metalness: 0.8 });
-    [
+    const legPositions = [
       [-2.2, -1.15, -1.1],
       [2.2, -1.15, -1.1],
       [-2.2, -1.15, 1.1],
       [2.2, -1.15, 1.1]
-    ].forEach(([x, y, z]) => {
+    ];
+    legPositions.forEach(([x, y, z]) => {
       const leg = new THREE.Mesh(legGeo, legMat);
       leg.position.set(x, y, z);
       leg.castShadow = true;
       deskGroup.add(leg);
+
+      // Contact shadow spot under each leg foot
+      const footShadowGeo = new THREE.CircleGeometry(0.12, 16);
+      const footShadowMat = new THREE.MeshBasicMaterial({ color: 0x000000, opacity: 0.22, transparent: true });
+      const footShadow = new THREE.Mesh(footShadowGeo, footShadowMat);
+      footShadow.rotation.x = -Math.PI / 2;
+      footShadow.position.set(x, -2.248, z);
+      deskGroup.add(footShadow);
     });
 
     // Desk Mat
@@ -147,10 +172,39 @@ function Hero() {
     deskMat.receiveShadow = true;
     deskGroup.add(deskMat);
 
-    // Grid Floor
-    const gridHelper = new THREE.GridHelper(20, 20, 0xe4e4e7, 0xf4f4f5);
-    gridHelper.position.y = -2.24;
-    scene.add(gridHelper);
+    // Realistic Floor Shadows
+    const shadowCanvas = document.createElement("canvas");
+    shadowCanvas.width = 512;
+    shadowCanvas.height = 512;
+    const sCtx = shadowCanvas.getContext("2d");
+    if (sCtx) {
+      const grad = sCtx.createRadialGradient(256, 256, 15, 256, 256, 250);
+      grad.addColorStop(0, "rgba(0, 0, 0, 0.26)");
+      grad.addColorStop(0.4, "rgba(0, 0, 0, 0.12)");
+      grad.addColorStop(0.75, "rgba(0, 0, 0, 0.03)");
+      grad.addColorStop(1, "rgba(0, 0, 0, 0)");
+      sCtx.fillStyle = grad;
+      sCtx.fillRect(0, 0, 512, 512);
+    }
+    const contactShadowTex = new THREE.CanvasTexture(shadowCanvas);
+    const contactGeo = new THREE.PlaneGeometry(5.6, 3.4);
+    const contactMat = new THREE.MeshBasicMaterial({
+      map: contactShadowTex,
+      transparent: true,
+      depthWrite: false
+    });
+    const contactMesh = new THREE.Mesh(contactGeo, contactMat);
+    contactMesh.rotation.x = -Math.PI / 2;
+    contactMesh.position.y = -2.245;
+    scene.add(contactMesh);
+
+    const floorGeo = new THREE.PlaneGeometry(30, 30);
+    const floorMat = new THREE.ShadowMaterial({ opacity: 0.14 });
+    const floor = new THREE.Mesh(floorGeo, floorMat);
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = -2.25;
+    floor.receiveShadow = true;
+    scene.add(floor);
 
     const interactiveObjects = [];
 
@@ -181,40 +235,40 @@ function Hero() {
     const screenCanvas = document.createElement("canvas");
     screenCanvas.width = 1024;
     screenCanvas.height = 600;
-    const sCtx = screenCanvas.getContext("2d");
-    if (sCtx) {
-      sCtx.fillStyle = "#0c0d12";
-      sCtx.fillRect(0, 0, 1024, 600);
-      sCtx.fillStyle = "#18181b";
-      sCtx.fillRect(0, 0, 1024, 40);
-      sCtx.fillStyle = "#ffffff";
-      sCtx.font = "bold 18px -apple-system, sans-serif";
-      sCtx.fillText("SabayTinh • Ultra 4K Display (100Hz HDR)", 24, 26);
+    const scrCtx = screenCanvas.getContext("2d");
+    if (scrCtx) {
+      scrCtx.fillStyle = "#0c0d12";
+      scrCtx.fillRect(0, 0, 1024, 600);
+      scrCtx.fillStyle = "#18181b";
+      scrCtx.fillRect(0, 0, 1024, 40);
+      scrCtx.fillStyle = "#ffffff";
+      scrCtx.font = "bold 18px -apple-system, sans-serif";
+      scrCtx.fillText("SabayTinh • Ultra 4K Display (100Hz HDR)", 24, 26);
 
-      sCtx.fillStyle = "#18181b";
-      sCtx.roundRect(40, 70, 440, 240, 12);
-      sCtx.fill();
-      sCtx.fillStyle = "#ffffff";
-      sCtx.font = "bold 24px monospace";
-      sCtx.fillText("SABAYVIEW 4K", 65, 125);
-      sCtx.fillStyle = "#a1a1aa";
-      sCtx.font = "14px monospace";
-      sCtx.fillText("Resolution: 3840 x 2160 UHD", 65, 160);
-      sCtx.fillText("USB-C 65W Power Delivery", 65, 190);
-      sCtx.fillText("Price: $120.00 USD", 65, 225);
+      scrCtx.fillStyle = "#18181b";
+      scrCtx.roundRect(40, 70, 440, 240, 12);
+      scrCtx.fill();
+      scrCtx.fillStyle = "#ffffff";
+      scrCtx.font = "bold 24px monospace";
+      scrCtx.fillText("SABAYVIEW 4K", 65, 125);
+      scrCtx.fillStyle = "#a1a1aa";
+      scrCtx.font = "14px monospace";
+      scrCtx.fillText("Resolution: 3840 x 2160 UHD", 65, 160);
+      scrCtx.fillText("USB-C 65W Power Delivery", 65, 190);
+      scrCtx.fillText("Price: $120.00 USD", 65, 225);
 
-      sCtx.fillStyle = "#18181b";
-      sCtx.roundRect(510, 70, 470, 480, 12);
-      sCtx.fill();
-      sCtx.fillStyle = "#ffffff";
-      sCtx.font = "16px monospace";
-      sCtx.fillText("// SabayTinh Workspace Setup", 535, 115);
-      sCtx.fillStyle = "#a1a1aa";
-      sCtx.fillText("const display = new Monitor({", 535, 155);
-      sCtx.fillText('  model: "SabayView 4K",', 535, 185);
-      sCtx.fillText("  price: 120,", 535, 215);
-      sCtx.fillText('  status: "In Stock"', 535, 245);
-      sCtx.fillText("});", 535, 275);
+      scrCtx.fillStyle = "#18181b";
+      scrCtx.roundRect(510, 70, 470, 480, 12);
+      scrCtx.fill();
+      scrCtx.fillStyle = "#ffffff";
+      scrCtx.font = "16px monospace";
+      scrCtx.fillText("// SabayTinh Workspace Setup", 535, 115);
+      scrCtx.fillStyle = "#a1a1aa";
+      scrCtx.fillText("const display = new Monitor({", 535, 155);
+      scrCtx.fillText('  model: "SabayView 4K",', 535, 185);
+      scrCtx.fillText("  price: 120,", 535, 215);
+      scrCtx.fillText('  status: "In Stock"', 535, 245);
+      scrCtx.fillText("});", 535, 275);
     }
     const screenTexture = new THREE.CanvasTexture(screenCanvas);
     const screenMaterial = new THREE.MeshBasicMaterial({ map: screenTexture });
@@ -511,11 +565,11 @@ function Hero() {
   };
 
   return (
-    <section id="interactive-desk" className="relative w-full bg-white border-b border-neutral-200 overflow-hidden py-8 sm:py-12 lg:py-16">
+    <section id="interactive-desk" className="relative w-full bg-white border-b border-neutral-200 overflow-hidden py-10 sm:py-14 lg:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Split Grid: Left = Typography & CTAs, Right = Interactive 3D Desk */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+        {/* Split Grid: Left = Typography & CTAs, Right = Real 3D Desk on Floor */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
           
           {/* Left Side: Modern Animated Hero Content */}
           <div className="lg:col-span-5 flex flex-col items-start text-left space-y-6">
@@ -578,70 +632,38 @@ function Hero() {
               </Button>
             </div>
 
-            {/* Interactive 3D Device Focus Chips */}
-            <div className="pt-4 border-t border-neutral-100 w-full space-y-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 block">
-                Focus 3D Device on Desk:
-              </span>
-              <div className="flex flex-wrap gap-1.5">
-                <button
-                  onClick={() => selectItemView("all")}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                    activeCameraTarget === "all"
-                      ? "bg-black text-white"
-                      : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                  }`}
-                >
-                  All View
-                </button>
-                {PRODUCTS.map((prod) => (
-                  <button
-                    key={prod.id}
-                    onClick={() => selectItemView(prod.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                      activeCameraTarget === prod.id
-                        ? "bg-black text-white"
-                        : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
-                    }`}
-                  >
-                    {prod.name.split(" ")[1] || prod.name} ({formatPrice(prod.price)})
-                  </button>
-                ))}
-              </div>
-            </div>
-
           </div>
 
-          {/* Right Side: The Interactive 3D Computer Desk */}
-          <div className="lg:col-span-7 w-full">
-            <div className="relative w-full h-[460px] sm:h-[520px] rounded-3xl bg-neutral-50/70 border border-neutral-200 overflow-hidden select-none shadow-xs">
+          {/* Right Side: Seamless Borderless 3D Computer Desk Real on Floor */}
+          <div className="lg:col-span-7 w-full flex items-center justify-center">
+            <div className="relative w-full h-[480px] sm:h-[540px] select-none">
               
-              {/* Three.js Canvas */}
+              {/* Three.js Transparent Canvas without outer borders */}
               <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
 
-              {/* Canvas Controls */}
-              <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+              {/* Minimalist Floating Controls */}
+              <div className="absolute top-2 left-2 z-10 flex items-center gap-2">
                 <button
                   onClick={() => setIsAutoRotate(!isAutoRotate)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/90 text-neutral-800 border border-neutral-200 backdrop-blur-md shadow-2xs hover:bg-white"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-white/90 text-neutral-800 border border-neutral-200 backdrop-blur-md shadow-2xs hover:bg-white transition-all"
                 >
                   <RotateCw className={`w-3.5 h-3.5 ${isAutoRotate ? "animate-spin" : ""}`} style={{ animationDuration: "6s" }} />
-                  {isAutoRotate ? "Rotate" : "Paused"}
+                  <span>{isAutoRotate ? "Rotate" : "Paused"}</span>
                 </button>
 
                 <button
                   onClick={() => selectItemView("all")}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/90 text-neutral-800 border border-neutral-200 backdrop-blur-md shadow-2xs hover:bg-white"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-white/90 text-neutral-800 border border-neutral-200 backdrop-blur-md shadow-2xs hover:bg-white transition-all"
                 >
                   <Maximize2 className="w-3.5 h-3.5" />
-                  Reset View
+                  <span>Reset View</span>
                 </button>
               </div>
 
-              {/* Instructions Badge */}
-              <div className="absolute top-4 right-4 z-10 hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-medium bg-white/90 text-neutral-600 border border-neutral-200 backdrop-blur-md shadow-2xs">
+              {/* Clean Interactive Hint */}
+              <div className="absolute top-2 right-2 z-10 hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-medium bg-white/90 text-neutral-600 border border-neutral-200 backdrop-blur-md shadow-2xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
-                Click item on desk to inspect
+                <span>Click device to inspect</span>
               </div>
 
               {/* Hover Badge */}
@@ -685,7 +707,7 @@ function Hero() {
                         className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-neutral-100 text-black hover:bg-neutral-200 transition-colors"
                       >
                         <Eye className="w-3.5 h-3.5" />
-                        Details
+                        <span>Details</span>
                       </button>
 
                       <button
@@ -695,12 +717,12 @@ function Hero() {
                         {addedAnim ? (
                           <>
                             <Check className="w-3.5 h-3.5" />
-                            Added
+                            <span>Added</span>
                           </>
                         ) : (
                           <>
                             <ShoppingBag className="w-3.5 h-3.5" />
-                            Add ({formatPrice(selectedProduct.price)})
+                            <span>Add ({formatPrice(selectedProduct.price)})</span>
                           </>
                         )}
                       </button>
