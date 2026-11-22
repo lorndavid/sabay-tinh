@@ -1,9 +1,9 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
-import { 
-  Database, 
-  Mail, 
-  Phone 
+import {
+  Database,
+  Mail,
+  Phone
 } from "lucide-react";
 
 export default function Footer() {
