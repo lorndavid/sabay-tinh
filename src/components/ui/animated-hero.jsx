@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import * as THREE from "three";
-import { MoveRight, Sparkles, ArrowRight, RotateCw, Maximize2, ShoppingBag, Eye, Check } from "lucide-react";
+import { MoveRight, Sparkles, ArrowRight, ShoppingBag, Eye, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PRODUCTS } from "@/data/products";
 import { useCart } from "@/context/CartContext";
@@ -640,31 +640,6 @@ function Hero() {
               
               {/* Three.js Transparent Canvas without outer borders */}
               <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
-
-              {/* Minimalist Floating Controls */}
-              <div className="absolute top-2 left-2 z-10 flex items-center gap-2">
-                <button
-                  onClick={() => setIsAutoRotate(!isAutoRotate)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-white/90 text-neutral-800 border border-neutral-200 backdrop-blur-md shadow-2xs hover:bg-white transition-all"
-                >
-                  <RotateCw className={`w-3.5 h-3.5 ${isAutoRotate ? "animate-spin" : ""}`} style={{ animationDuration: "6s" }} />
-                  <span>{isAutoRotate ? "Rotate" : "Paused"}</span>
-                </button>
-
-                <button
-                  onClick={() => selectItemView("all")}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-white/90 text-neutral-800 border border-neutral-200 backdrop-blur-md shadow-2xs hover:bg-white transition-all"
-                >
-                  <Maximize2 className="w-3.5 h-3.5" />
-                  <span>Reset View</span>
-                </button>
-              </div>
-
-              {/* Clean Interactive Hint */}
-              <div className="absolute top-2 right-2 z-10 hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-medium bg-white/90 text-neutral-600 border border-neutral-200 backdrop-blur-md shadow-2xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
-                <span>Click device to inspect</span>
-              </div>
 
               {/* Hover Badge */}
               {hoveredProduct && !selectedProduct && (
