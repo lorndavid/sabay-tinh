@@ -141,8 +141,8 @@ export default function Footer() {
         </div>
 
         {/* Big Bold Clean Brand Text Under Footer */}
-        <div className="mt-8 pt-6 border-t border-neutral-100 overflow-hidden select-none">
-          <h2 className="text-[13vw] sm:text-[14vw] font-black tracking-tighter text-black text-center leading-none uppercase">
+        <div className="mt-10 pt-6 border-t border-neutral-100 select-none text-center">
+          <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-tight text-black leading-none uppercase whitespace-nowrap">
             SabayTinh
           </h2>
         </div>
