@@ -4,7 +4,6 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import ThreeDeskScene from "./components/ThreeDeskScene";
 import ProductCatalog from "./components/ProductCatalog";
-import SpecsComparison from "./components/SpecsComparison";
 import CartView from "./components/CartView";
 import CheckoutView from "./components/CheckoutView";
 import CartDrawer from "./components/CartDrawer";
@@ -18,7 +17,7 @@ function MainContent() {
   const { activeView } = useCart();
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-neutral-900">
+    <div className="min-h-screen flex flex-col bg-white text-black">
       <Navbar />
 
       <main className="flex-1">
@@ -27,7 +26,6 @@ function MainContent() {
             <Hero />
             <ThreeDeskScene />
             <ProductCatalog />
-            <SpecsComparison />
           </>
         )}
 

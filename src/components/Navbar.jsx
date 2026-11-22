@@ -2,17 +2,16 @@ import React from "react";
 import { useCart } from "../context/CartContext";
 import { 
   ShoppingBag, 
-  Sparkles, 
   ArrowRight
 } from "lucide-react";
 
 export default function Navbar() {
-  const { 
-    totalItemCount, 
-    grandTotal, 
-    setIsCartDrawerOpen, 
-    activeView, 
-    setActiveView, 
+  const {
+    totalItemCount,
+    grandTotal,
+    setIsCartDrawerOpen,
+    activeView,
+    setActiveView,
     formatPrice
   } = useCart();
 
@@ -30,8 +29,8 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-neutral-200">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          
-          {/* Brand Name strictly: SabayTinh */}
+
+          {/* Brand Name */}
           <div className="flex items-center gap-8">
             <button
               onClick={() => handleNavClick("landing")}
@@ -45,7 +44,7 @@ export default function Navbar() {
               </span>
             </button>
 
-            {/* Clean Desktop Navigation Links (No ERD in navbar) */}
+            {/* Clean Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-6 text-xs font-semibold uppercase tracking-wider text-neutral-600">
               <button
                 onClick={() => handleNavClick("landing", "interactive-desk")}
@@ -60,20 +59,12 @@ export default function Navbar() {
               >
                 Products
               </button>
-
-              <button
-                onClick={() => handleNavClick("landing", "specs-section")}
-                className="hover:text-black transition-colors"
-              >
-                Specifications
-              </button>
             </nav>
           </div>
 
           {/* Right Controls: Cart & Checkout */}
           <div className="flex items-center gap-3">
-            
-            {/* Cart Button with USD total */}
+
             <button
               onClick={() => setIsCartDrawerOpen(true)}
               className="relative flex items-center gap-2 px-3.5 py-2 rounded-xl bg-black text-white hover:bg-neutral-800 transition-all text-xs font-bold"
@@ -81,7 +72,7 @@ export default function Navbar() {
             >
               <ShoppingBag className="w-3.5 h-3.5" />
               <span>Cart</span>
-              
+
               <span className="flex items-center justify-center min-w-[18px] h-4 px-1 rounded-full bg-white text-black text-[10px] font-black">
                 {totalItemCount}
               </span>
@@ -94,11 +85,10 @@ export default function Navbar() {
             {totalItemCount > 0 && (
               <button
                 onClick={() => setActiveView("checkout")}
-                className={`hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
-                  activeView === "checkout"
-                    ? "bg-neutral-900 text-white border-neutral-900"
-                    : "bg-white text-black border-neutral-300 hover:bg-neutral-50"
-                }`}
+                className={`hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all ${activeView === "checkout"
+                  ? "bg-neutral-900 text-white border-neutral-900"
+                  : "bg-white text-black border-neutral-300 hover:bg-neutral-50"
+                  }`}
               >
                 <span>Checkout</span>
                 <ArrowRight className="w-3.5 h-3.5" />

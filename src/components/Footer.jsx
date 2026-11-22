@@ -2,8 +2,6 @@ import React from "react";
 import { useCart } from "../context/CartContext";
 import { 
   Database, 
-  Truck, 
-  CreditCard, 
   Mail, 
   Phone 
 } from "lucide-react";
@@ -13,10 +11,10 @@ export default function Footer() {
 
   return (
     <footer className="w-full bg-white text-black border-t border-neutral-200">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-6">
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-          
+
           {/* Brand Info */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
@@ -33,7 +31,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Quick Links */}
+          {/* Navigation */}
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-black mb-3">
               Navigation
@@ -96,7 +94,7 @@ export default function Footer() {
           {/* Products */}
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-black mb-3">
-              Products
+              Hardware
             </h4>
             <ul className="space-y-1.5 text-xs text-neutral-500">
               <li>SabayBook Pro Laptop ($650)</li>
@@ -109,7 +107,7 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-black mb-3">
-              Contact
+              Support
             </h4>
             <ul className="space-y-1.5 text-xs text-neutral-500">
               <li className="flex items-center gap-1.5">
@@ -128,7 +126,7 @@ export default function Footer() {
 
         </div>
 
-        {/* Bottom */}
+        {/* Small Bottom Bar */}
         <div className="mt-10 pt-6 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-neutral-400">
           <div>
             © 2026 SabayTinh. All rights reserved.
@@ -140,6 +138,13 @@ export default function Footer() {
             <span>•</span>
             <span>Classic Edition</span>
           </div>
+        </div>
+
+        {/* Big Bold Clean Brand Text Under Footer */}
+        <div className="mt-8 pt-6 border-t border-neutral-100 overflow-hidden select-none">
+          <h2 className="text-[13vw] sm:text-[14vw] font-black tracking-tighter text-black text-center leading-none uppercase">
+            SabayTinh
+          </h2>
         </div>
 
       </div>
