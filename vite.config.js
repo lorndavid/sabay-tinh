@@ -5,5 +5,5 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: './', // Ensures assets load correctly on GitHub Pages under any repository name
+  base: '/sabay-tinh/', // Exact path for GitHub repository: https://lorndavid.github.io/sabay-tinh/
 })
